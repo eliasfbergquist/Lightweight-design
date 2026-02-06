@@ -1,5 +1,5 @@
-import matlib, compositelib
 import numpy as np
+import matlib, compositelib
 m1 = matlib.get('Carbon/Epoxy(a)')
 
 # Material stiffness matrix:
@@ -36,4 +36,6 @@ print()
 print(np.array2string(Cav, precision=0, suppress_small=True, separator='  ', floatmode='maxprec') )
 print()
 print('Homogenized engineering constants as a new material:')
-display(m_hl)
+for ele in m_hl:
+    print(ele+": "+str(m_hl[ele]))
+
