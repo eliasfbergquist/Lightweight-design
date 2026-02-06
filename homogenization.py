@@ -31,6 +31,28 @@ m_hl =   {'E1':  1/Sav[0,0],
           'G13': 1/Sav[4,4],
           'G23': 1/Sav[3,3]}
 
+#a version of these calculations in a function that can be called from other scripts if needed:
+#takes fiber configuration and material type as inputs, returns stiffness matrix and dictionary with engineering values
+def homogenize(thickness_array=[0.5,0.1,0.2,0.2], orientation_array=[], material_name="Carbon/Epoxy(a)"):
+    Cav = np.zeros((6,6))
+    for thi, ori in zip(thicknesses, orientations):
+        Ck = compositelib.C3Dtz(C,ori)
+        Cav = Cav + (Ck*thi)/(sum(thicknesses))
+    Sav = np.linalg.inv(Cav)
+    m_hl =   {'E1':  1/Sav[0,0],
+          'E2':  1/Sav[1,1],
+          'E3':  1/Sav[2,2],
+          'v12': -Sav[0,1]*(1/Sav[0,0]),
+          'v13': -Sav[0,2]*(1/Sav[0,0]),
+          'v23': -Sav[1,2]*(1/Sav[1,1]),
+          'G12': 1/Sav[5,5],
+          'G13': 1/Sav[4,4],
+          'G23': 1/Sav[3,3]}
+    return Cav, m_hl
+
+
+
+
 print('Homogenized stiffness matrix:')
 print()
 print(np.array2string(Cav, precision=0, suppress_small=True, separator='  ', floatmode='maxprec') )
