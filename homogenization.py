@@ -6,7 +6,7 @@ m1 = matlib.get('Carbon/Epoxy(a)')
 C = compositelib.C3D(m1)
 
 # Example: quazi-isotropic layup:
-thicknesses =  [1,  1,   1,   1]
+thicknesses =  [0.5,  0.1 ,   0.2,   0.2]
 orientations = [0, 90, -45,  45]
 
 # Initiating the average stiffness matrix:
@@ -24,12 +24,12 @@ Sav = np.linalg.inv(Cav)
 m_hl =   {'E1':  1/Sav[0,0],
           'E2':  1/Sav[1,1],
           'E3':  1/Sav[2,2],
-          'G23': 1/Sav[3,3],
-          'G13': 1/Sav[4,4],
-          'G12': 1/Sav[5,5],
-          'v23': -Sav[1,2]*(1/Sav[1,1]),
+          'v12': -Sav[0,1]*(1/Sav[0,0]),
           'v13': -Sav[0,2]*(1/Sav[0,0]),
-          'v12': -Sav[0,1]*(1/Sav[0,0]) }
+          'v23': -Sav[1,2]*(1/Sav[1,1]),
+          'G12': 1/Sav[5,5],
+          'G13': 1/Sav[4,4],
+          'G23': 1/Sav[3,3]}
 
 print('Homogenized stiffness matrix:')
 print()
